@@ -1,0 +1,15 @@
+/* Tambahkan transisi umum pada elemen */
+.todo {
+  transition: all 0.3s ease; /* Properti yang diubah, durasi, dan easing */
+}
+
+/* Jika elemen berubah status atau properti CSS lainnya, transisinya akan halus */
+.todo.sedang {
+  color: lightblue; /* Warna latar belakang berubah */
+  text-decoration: underline;
+}
+
+.todo.sudah {
+  color: lightgreen; /* Warna latar belakang berubah */
+  text-decoration: line-through; /* Gaya teks berubah */
+}

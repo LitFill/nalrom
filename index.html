@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo App</title>
+    <meta name="color-scheme" content="light dark" />
+    <script type="text/javascript" src="elm.js">
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.indigo.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script type="text/javascript">
+      var dataStorage = localStorage.getItem("app-model");
+      var flags = dataStorage ? JSON.parse(dataStorage) : null;
+
+      var app = Elm.Main.init({
+        node: document.getElementById("app"),
+        flags: flags,
+      });
+
+      app.ports.setStorage.subscribe((state) => {
+        localStorage.setItem("app-model", JSON.stringify(state));
+      });
+    </script>
+  </body>
+</html>
