@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.Q.E === region.V.E)
+	if (region.X.G === region.ab.G)
 	{
-		return 'on line ' + region.Q.E;
+		return 'on line ' + region.X.G;
 	}
-	return 'on lines ' + region.Q.E + ' through ' + region.V.E;
+	return 'on lines ' + region.X.G + ' through ' + region.ab.G;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aB,
-		impl.aJ,
-		impl.aH,
+		impl.aI,
+		impl.aQ,
+		impl.aO,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		r: func(record.r),
-		R: record.R,
-		O: record.O
+		t: func(record.t),
+		Y: record.Y,
+		V: record.V
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.r;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.R;
+		var message = !tag ? value : tag < 3 ? value.a : value.t;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.Y;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.O) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.V) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aB,
-		impl.aJ,
-		impl.aH,
+		impl.aI,
+		impl.aQ,
+		impl.aO,
 		function(sendToApp, initialModel) {
-			var view = impl.aK;
+			var view = impl.aR;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aB,
-		impl.aJ,
-		impl.aH,
+		impl.aI,
+		impl.aQ,
+		impl.aO,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.P && impl.P(sendToApp)
-			var view = impl.aK;
+			var divertHrefToApp = impl.W && impl.W(sendToApp)
+			var view = impl.aR;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.au);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aB);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aI) && (_VirtualDom_doc.title = title = doc.aI);
+				(title !== doc.aP) && (_VirtualDom_doc.title = title = doc.aP);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aD;
-	var onUrlRequest = impl.aE;
+	var onUrlChange = impl.aK;
+	var onUrlRequest = impl.aL;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		P: function(sendToApp)
+		W: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ah === next.ah
-							&& curr.Z === next.Z
-							&& curr.ae.a === next.ae.a
+							&& curr.ao === next.ao
+							&& curr.af === next.af
+							&& curr.al.a === next.al.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aB: function(flags)
+		aI: function(flags)
 		{
-			return A3(impl.aB, flags, _Browser_getUrl(), key);
+			return A3(impl.aI, flags, _Browser_getUrl(), key);
 		},
-		aK: impl.aK,
-		aJ: impl.aJ,
-		aH: impl.aH
+		aR: impl.aR,
+		aQ: impl.aQ,
+		aO: impl.aO
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { az: 'hidden', av: 'visibilitychange' }
+		? { aG: 'hidden', aC: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { az: 'mozHidden', av: 'mozvisibilitychange' }
+		? { aG: 'mozHidden', aC: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { az: 'msHidden', av: 'msvisibilitychange' }
+		? { aG: 'msHidden', aC: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { az: 'webkitHidden', av: 'webkitvisibilitychange' }
-		: { az: 'hidden', av: 'visibilitychange' };
+		? { aG: 'webkitHidden', aC: 'webkitvisibilitychange' }
+		: { aG: 'hidden', aC: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		al: _Browser_getScene(),
-		ao: {
-			aq: _Browser_window.pageXOffset,
-			ar: _Browser_window.pageYOffset,
-			ap: _Browser_doc.documentElement.clientWidth,
-			Y: _Browser_doc.documentElement.clientHeight
+		as: _Browser_getScene(),
+		av: {
+			ax: _Browser_window.pageXOffset,
+			ay: _Browser_window.pageYOffset,
+			aw: _Browser_doc.documentElement.clientWidth,
+			ae: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ap: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Y: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aw: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ae: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			al: {
-				ap: node.scrollWidth,
-				Y: node.scrollHeight
+			as: {
+				aw: node.scrollWidth,
+				ae: node.scrollHeight
 			},
-			ao: {
-				aq: node.scrollLeft,
-				ar: node.scrollTop,
-				ap: node.clientWidth,
-				Y: node.clientHeight
+			av: {
+				ax: node.scrollLeft,
+				ay: node.scrollTop,
+				aw: node.clientWidth,
+				ae: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			al: _Browser_getScene(),
-			ao: {
-				aq: x,
-				ar: y,
-				ap: _Browser_doc.documentElement.clientWidth,
-				Y: _Browser_doc.documentElement.clientHeight
+			as: _Browser_getScene(),
+			av: {
+				ax: x,
+				ay: y,
+				aw: _Browser_doc.documentElement.clientWidth,
+				ae: _Browser_doc.documentElement.clientHeight
 			},
-			ax: {
-				aq: x + rect.left,
-				ar: y + rect.top,
-				ap: rect.width,
-				Y: rect.height
+			aE: {
+				ax: x + rect.left,
+				ay: y + rect.top,
+				aw: rect.width,
+				ae: rect.height
 			}
 		};
 	});
@@ -4874,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {X: fragment, Z: host, ac: path, ae: port_, ah: protocol, ai: query};
+		return {ad: fragment, af: host, aj: path, al: port_, ao: protocol, ap: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5156,7 +5156,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Main$Model = F4(
 	function (todos, idSelanjutnya, teksInput, prioritasInput) {
-		return {z: idSelanjutnya, F: prioritasInput, H: teksInput, m: todos};
+		return {B: idSelanjutnya, H: prioritasInput, K: teksInput, o: todos};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -5166,7 +5166,7 @@ var $elm$json$Json$Decode$map4 = _Json_map4;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Main$Todo = F4(
 	function (id, deskripsi, status, prioritas) {
-		return {L: deskripsi, n: id, A: prioritas, l: status};
+		return {P: deskripsi, p: id, C: prioritas, l: status};
 	});
 var $author$project$Main$Belum = 0;
 var $author$project$Main$Sedang = 1;
@@ -5211,7 +5211,7 @@ var $author$project$Main$init = function (flag) {
 				var model = _v0.a;
 				return model;
 			} else {
-				return {z: 1, F: 0, H: '', m: _List_Nil};
+				return {B: 1, H: 0, K: '', o: _List_Nil};
 			}
 		}(),
 		$elm$core$Platform$Cmd$none);
@@ -5250,17 +5250,17 @@ var $author$project$Main$encodeTodo = function (todo) {
 			[
 				_Utils_Tuple2(
 				'id',
-				$elm$json$Json$Encode$int(todo.n)),
+				$elm$json$Json$Encode$int(todo.p)),
 				_Utils_Tuple2(
 				'deskripsi',
-				$elm$json$Json$Encode$string(todo.L)),
+				$elm$json$Json$Encode$string(todo.P)),
 				_Utils_Tuple2(
 				'status',
 				$elm$json$Json$Encode$string(
 					$author$project$Main$showStatus(todo.l))),
 				_Utils_Tuple2(
 				'prioritas',
-				$elm$json$Json$Encode$float(todo.A))
+				$elm$json$Json$Encode$float(todo.C))
 			]));
 };
 var $elm$json$Json$Encode$list = F2(
@@ -5278,16 +5278,16 @@ var $author$project$Main$encode = function (model) {
 			[
 				_Utils_Tuple2(
 				'todos',
-				A2($elm$json$Json$Encode$list, $author$project$Main$encodeTodo, model.m)),
+				A2($elm$json$Json$Encode$list, $author$project$Main$encodeTodo, model.o)),
 				_Utils_Tuple2(
 				'id_berikutnya',
-				$elm$json$Json$Encode$int(model.z)),
+				$elm$json$Json$Encode$int(model.B)),
 				_Utils_Tuple2(
 				'teks_input',
-				$elm$json$Json$Encode$string(model.H)),
+				$elm$json$Json$Encode$string(model.K)),
 				_Utils_Tuple2(
 				'prioritas_input',
-				$elm$json$Json$Encode$float(model.F))
+				$elm$json$Json$Encode$float(model.H))
 			]));
 };
 var $author$project$Main$setStorage = _Platform_outgoingPort('setStorage', $elm$core$Basics$identity);
@@ -5342,7 +5342,7 @@ var $author$project$Main$normalizeTodos = function (todos) {
 		function (prioritas, todo) {
 			return _Utils_update(
 				todo,
-				{A: prioritas});
+				{C: prioritas});
 		});
 	return A3(
 		$author$project$Main$zipWith,
@@ -5357,7 +5357,7 @@ var $author$project$Main$normalizeTodos = function (todos) {
 		A2(
 			$elm$core$List$sortBy,
 			function ($) {
-				return $.A;
+				return $.C;
 			},
 			todos));
 };
@@ -5412,18 +5412,18 @@ var $author$project$Main$update = F2(
 			case 0:
 				var desk = msg.a;
 				var prioritas = msg.b;
-				var todoBaru = {L: desk, n: model.z, A: prioritas, l: 0};
+				var todoBaru = {P: desk, p: model.B, C: prioritas, l: 0};
 				return _Utils_Tuple2(
 					$elm$core$String$isEmpty(desk) ? model : _Utils_update(
 						model,
 						{
-							z: model.z + 1,
-							m: A2(
+							B: model.B + 1,
+							o: A2(
 								$elm$core$List$sortWith,
 								$author$project$Main$urutkanTodos,
 								$elm$core$List$reverse(
 									$author$project$Main$normalizeTodos(
-										A2($elm$core$List$cons, todoBaru, model.m))))
+										A2($elm$core$List$cons, todoBaru, model.o))))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
@@ -5433,7 +5433,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							m: A2(
+							o: A2(
 								$elm$core$List$sortWith,
 								$author$project$Main$urutkanTodos,
 								$elm$core$List$reverse(
@@ -5441,11 +5441,11 @@ var $author$project$Main$update = F2(
 										A2(
 											$elm$core$List$map,
 											function (todo) {
-												return _Utils_eq(todo.n, id) ? _Utils_update(
+												return _Utils_eq(todo.p, id) ? _Utils_update(
 													todo,
 													{l: status}) : todo;
 											},
-											model.m))))
+											model.o))))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 4:
@@ -5454,7 +5454,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							m: A2(
+							o: A2(
 								$elm$core$List$sortWith,
 								$author$project$Main$urutkanTodos,
 								$elm$core$List$reverse(
@@ -5462,9 +5462,9 @@ var $author$project$Main$update = F2(
 										A2(
 											$elm$core$List$filter,
 											function (todo) {
-												return !_Utils_eq(todo.n, id);
+												return !_Utils_eq(todo.p, id);
 											},
-											model.m))))
+											model.o))))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 1:
@@ -5472,14 +5472,14 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{H: teks}),
+						{K: teks}),
 					$elm$core$Platform$Cmd$none);
 			default:
 				var prioritas = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{F: prioritas}),
+						{H: prioritas}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -5517,6 +5517,7 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 			_VirtualDom_noJavaScriptOrHtmlUri(value));
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
@@ -5524,6 +5525,7 @@ var $elm$core$Basics$composeR = F3(
 	});
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$fieldset = _VirtualDom_node('fieldset');
+var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$input = _VirtualDom_node('input');
@@ -5590,9 +5592,143 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
+var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
+var $1602$elm_feather$FeatherIcons$Icon = $elm$core$Basics$identity;
+var $1602$elm_feather$FeatherIcons$defaultAttributes = function (name) {
+	return {
+		O: $elm$core$Maybe$Just('feather feather-' + name),
+		Q: 24,
+		I: '',
+		R: 2,
+		S: '0 0 24 24'
+	};
+};
+var $1602$elm_feather$FeatherIcons$makeBuilder = F2(
+	function (name, src) {
+		return {
+			f: $1602$elm_feather$FeatherIcons$defaultAttributes(name),
+			h: src
+		};
+	});
+var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
+var $elm$svg$Svg$Attributes$strokeLinecap = _VirtualDom_attribute('stroke-linecap');
+var $elm$svg$Svg$Attributes$strokeLinejoin = _VirtualDom_attribute('stroke-linejoin');
+var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
+var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
+var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
+var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$virtual_dom$VirtualDom$property = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_property,
+			_VirtualDom_noInnerHtmlOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlJson(value));
+	});
+var $1602$elm_feather$FeatherIcons$xmlns = function (s) {
+	return A2(
+		$elm$virtual_dom$VirtualDom$property,
+		'xmlns',
+		$elm$json$Json$Encode$string(s));
+};
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $1602$elm_feather$FeatherIcons$plus = A2(
+	$1602$elm_feather$FeatherIcons$makeBuilder,
+	'plus',
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					$1602$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					$elm$svg$Svg$Attributes$width('24'),
+					$elm$svg$Svg$Attributes$height('24'),
+					$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					$elm$svg$Svg$Attributes$fill('none'),
+					$elm$svg$Svg$Attributes$stroke('currentColor'),
+					$elm$svg$Svg$Attributes$strokeWidth('2'),
+					$elm$svg$Svg$Attributes$strokeLinecap('round'),
+					$elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					$elm$svg$Svg$Attributes$class('feather feather-plus')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1('12'),
+							$elm$svg$Svg$Attributes$y1('5'),
+							$elm$svg$Svg$Attributes$x2('12'),
+							$elm$svg$Svg$Attributes$y2('19')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$line,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x1('5'),
+							$elm$svg$Svg$Attributes$y1('12'),
+							$elm$svg$Svg$Attributes$x2('19'),
+							$elm$svg$Svg$Attributes$y2('12')
+						]),
+					_List_Nil)
+				]))
+		]));
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$core$String$toFloat = _String_toFloat;
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
+var $elm$svg$Svg$map = $elm$virtual_dom$VirtualDom$map;
+var $1602$elm_feather$FeatherIcons$toHtml = F2(
+	function (attributes, _v0) {
+		var src = _v0.h;
+		var attrs = _v0.f;
+		var strSize = $elm$core$String$fromFloat(attrs.Q);
+		var baseAttributes = _List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$fill('none'),
+				$elm$svg$Svg$Attributes$height(
+				_Utils_ap(strSize, attrs.I)),
+				$elm$svg$Svg$Attributes$width(
+				_Utils_ap(strSize, attrs.I)),
+				$elm$svg$Svg$Attributes$stroke('currentColor'),
+				$elm$svg$Svg$Attributes$strokeLinecap('round'),
+				$elm$svg$Svg$Attributes$strokeLinejoin('round'),
+				$elm$svg$Svg$Attributes$strokeWidth(
+				$elm$core$String$fromFloat(attrs.R)),
+				$elm$svg$Svg$Attributes$viewBox(attrs.S)
+			]);
+		var combinedAttributes = _Utils_ap(
+			function () {
+				var _v1 = attrs.O;
+				if (!_v1.$) {
+					var c = _v1.a;
+					return A2(
+						$elm$core$List$cons,
+						$elm$svg$Svg$Attributes$class(c),
+						baseAttributes);
+				} else {
+					return baseAttributes;
+				}
+			}(),
+			attributes);
+		return A2(
+			$elm$svg$Svg$svg,
+			combinedAttributes,
+			A2(
+				$elm$core$List$map,
+				$elm$svg$Svg$map($elm$core$Basics$never),
+				src));
+	});
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$GantiStatusTodo = F2(
@@ -5615,7 +5751,46 @@ var $author$project$Main$enumerateStatus = function (status) {
 			return 2;
 	}
 };
-var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$svg$Svg$Attributes$points = _VirtualDom_attribute('points');
+var $elm$svg$Svg$polygon = $elm$svg$Svg$trustedNode('polygon');
+var $1602$elm_feather$FeatherIcons$fastForward = A2(
+	$1602$elm_feather$FeatherIcons$makeBuilder,
+	'fast-forward',
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					$1602$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					$elm$svg$Svg$Attributes$width('24'),
+					$elm$svg$Svg$Attributes$height('24'),
+					$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					$elm$svg$Svg$Attributes$fill('none'),
+					$elm$svg$Svg$Attributes$stroke('currentColor'),
+					$elm$svg$Svg$Attributes$strokeWidth('2'),
+					$elm$svg$Svg$Attributes$strokeLinecap('round'),
+					$elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					$elm$svg$Svg$Attributes$class('feather feather-fast-forward')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$polygon,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$points('13 19 22 12 13 5 13 19')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$polygon,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$points('2 19 11 12 2 5 2 19')
+						]),
+					_List_Nil)
+				]))
+		]));
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$nav = _VirtualDom_node('nav');
@@ -5635,7 +5810,117 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
+var $1602$elm_feather$FeatherIcons$play = A2(
+	$1602$elm_feather$FeatherIcons$makeBuilder,
+	'play',
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					$1602$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					$elm$svg$Svg$Attributes$width('24'),
+					$elm$svg$Svg$Attributes$height('24'),
+					$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					$elm$svg$Svg$Attributes$fill('none'),
+					$elm$svg$Svg$Attributes$stroke('currentColor'),
+					$elm$svg$Svg$Attributes$strokeWidth('2'),
+					$elm$svg$Svg$Attributes$strokeLinecap('round'),
+					$elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					$elm$svg$Svg$Attributes$class('feather feather-play')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$polygon,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$points('5 3 19 12 5 21 5 3')
+						]),
+					_List_Nil)
+				]))
+		]));
 var $elm$html$Html$progress = _VirtualDom_node('progress');
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
+var $elm$svg$Svg$polyline = $elm$svg$Svg$trustedNode('polyline');
+var $1602$elm_feather$FeatherIcons$rotateCcw = A2(
+	$1602$elm_feather$FeatherIcons$makeBuilder,
+	'rotate-ccw',
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					$1602$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					$elm$svg$Svg$Attributes$width('24'),
+					$elm$svg$Svg$Attributes$height('24'),
+					$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					$elm$svg$Svg$Attributes$fill('none'),
+					$elm$svg$Svg$Attributes$stroke('currentColor'),
+					$elm$svg$Svg$Attributes$strokeWidth('2'),
+					$elm$svg$Svg$Attributes$strokeLinecap('round'),
+					$elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					$elm$svg$Svg$Attributes$class('feather feather-rotate-ccw')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$polyline,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$points('1 4 1 10 7 10')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M3.51 15a9 9 0 1 0 2.13-9.36L1 10')
+						]),
+					_List_Nil)
+				]))
+		]));
+var $1602$elm_feather$FeatherIcons$trash = A2(
+	$1602$elm_feather$FeatherIcons$makeBuilder,
+	'trash',
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					$1602$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					$elm$svg$Svg$Attributes$width('24'),
+					$elm$svg$Svg$Attributes$height('24'),
+					$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					$elm$svg$Svg$Attributes$fill('none'),
+					$elm$svg$Svg$Attributes$stroke('currentColor'),
+					$elm$svg$Svg$Attributes$strokeWidth('2'),
+					$elm$svg$Svg$Attributes$strokeLinecap('round'),
+					$elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					$elm$svg$Svg$Attributes$class('feather feather-trash')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$polyline,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$points('3 6 5 6 21 6')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$d('M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2')
+						]),
+					_List_Nil)
+				]))
+		]));
 var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $author$project$Main$viewTodo = function (todo) {
 	var _v0 = function () {
@@ -5643,15 +5928,15 @@ var $author$project$Main$viewTodo = function (todo) {
 		switch (_v1) {
 			case 0:
 				return _Utils_Tuple2(
-					A2($author$project$Main$GantiStatusTodo, todo.n, 1),
+					A2($author$project$Main$GantiStatusTodo, todo.p, 1),
 					'lakukan');
 			case 1:
 				return _Utils_Tuple2(
-					A2($author$project$Main$GantiStatusTodo, todo.n, 2),
+					A2($author$project$Main$GantiStatusTodo, todo.p, 2),
 					'selesai');
 			default:
 				return _Utils_Tuple2(
-					A2($author$project$Main$GantiStatusTodo, todo.n, 0),
+					A2($author$project$Main$GantiStatusTodo, todo.p, 0),
 					'ulangi');
 		}
 	}();
@@ -5681,11 +5966,11 @@ var $author$project$Main$viewTodo = function (todo) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(todo.L),
+										$elm$html$Html$text(todo.P),
 										$elm$html$Html$text(
 										' (' + ($author$project$Main$showStatus(todo.l) + ') ')),
 										$elm$html$Html$text(
-										' <' + ($elm$core$String$fromFloat(todo.A) + '> '))
+										' <' + ($elm$core$String$fromFloat(todo.C) + '> '))
 									]))
 							])),
 						A2(
@@ -5712,10 +5997,25 @@ var $author$project$Main$viewTodo = function (todo) {
 										$elm$html$Html$button,
 										_List_fromArray(
 											[
+												$elm$html$Html$Attributes$class('steps'),
 												$elm$html$Html$Events$onClick(msg)
 											]),
 										_List_fromArray(
 											[
+												A2(
+												$1602$elm_feather$FeatherIcons$toHtml,
+												_List_Nil,
+												function () {
+													var _v2 = todo.l;
+													switch (_v2) {
+														case 2:
+															return $1602$elm_feather$FeatherIcons$rotateCcw;
+														case 0:
+															return $1602$elm_feather$FeatherIcons$play;
+														default:
+															return $1602$elm_feather$FeatherIcons$fastForward;
+													}
+												}()),
 												$elm$html$Html$text(label)
 											]))
 									])),
@@ -5728,11 +6028,13 @@ var $author$project$Main$viewTodo = function (todo) {
 										$elm$html$Html$button,
 										_List_fromArray(
 											[
+												$elm$html$Html$Attributes$class('hapus'),
 												$elm$html$Html$Events$onClick(
-												$author$project$Main$HapusTodo(todo.n))
+												$author$project$Main$HapusTodo(todo.p))
 											]),
 										_List_fromArray(
 											[
+												A2($1602$elm_feather$FeatherIcons$toHtml, _List_Nil, $1602$elm_feather$FeatherIcons$trash),
 												$elm$html$Html$text('hapus')
 											]))
 									]))
@@ -5767,7 +6069,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Events$onSubmit(
-						A2($author$project$Main$TambahTodo, model.H, model.F))
+						A2($author$project$Main$TambahTodo, model.K, model.H))
 					]),
 				_List_fromArray(
 					[
@@ -5809,22 +6111,33 @@ var $author$project$Main$view = function (model) {
 										$elm$html$Html$Attributes$value('Tambah'),
 										$elm$html$Html$Attributes$type_('submit')
 									]),
-								_List_Nil)
+								_List_fromArray(
+									[
+										A2($1602$elm_feather$FeatherIcons$toHtml, _List_Nil, $1602$elm_feather$FeatherIcons$plus)
+									]))
 							]))
 					])),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				A2($elm$core$List$map, $author$project$Main$viewTodo, model.m))
+				A2($elm$core$List$map, $author$project$Main$viewTodo, model.o)),
+				A2($elm$html$Html$br, _List_Nil, _List_Nil),
+				A2(
+				$elm$html$Html$footer,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Copyright (c) 2024 LitFill. All Rights Reserved.')
+					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		aB: $author$project$Main$init,
-		aH: function (_v0) {
+		aI: $author$project$Main$init,
+		aO: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		aJ: $author$project$Main$updateDanStorage,
-		aK: $author$project$Main$view
+		aQ: $author$project$Main$updateDanStorage,
+		aR: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

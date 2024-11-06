@@ -1,15 +1,36 @@
-/* Tambahkan transisi umum pada elemen */
-.todo {
-  transition: all 0.3s ease; /* Properti yang diubah, durasi, dan easing */
+body {
+  transition: all 0.3s ease;
 }
 
-/* Jika elemen berubah status atau properti CSS lainnya, transisinya akan halus */
 .todo.sedang {
-  color: lightblue; /* Warna latar belakang berubah */
+  color: #524ed2;
   text-decoration: underline;
 }
 
 .todo.sudah {
-  color: lightgreen; /* Warna latar belakang berubah */
-  text-decoration: line-through; /* Gaya teks berubah */
+  color: lightgreen;
+  opacity: 40%;
+}
+.todo > nav > ul > li > .hapus {
+  background-color: #c52f21;
+  border: 1px solid #c52f21;
+}
+
+.todo.sudah > nav > ul > li > .steps {
+  background-color: #7385a9;
+  border: 1px solid #7385a9;
+}
+
+body > main > h1 {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+body > main > footer {
+  text-align: center;
+}
+
+body > main {
+  /* border: 1px solid red; */
 }
