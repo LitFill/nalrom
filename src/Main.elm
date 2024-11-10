@@ -7,81 +7,15 @@ import Html.Attributes as A
 import Html.Events as E
 import Json.Decode as JD
 import Json.Encode as JE
-
-
-type TodoStatus
-    = Belum
-    | Sedang
-    | Sudah
-
-
-showStatus : TodoStatus -> String
-showStatus status =
-    case status of
-        Belum ->
-            "belum"
-
-        Sedang ->
-            "sedang"
-
-        Sudah ->
-            "sudah"
-
-
-readStatus : String -> TodoStatus
-readStatus str =
-    case str of
-        "sudah" ->
-            Sudah
-
-        "sedang" ->
-            Sedang
-
-        "belum" ->
-            Belum
-
-        _ ->
-            Belum
-
-
-enumerateStatus : TodoStatus -> Int
-enumerateStatus status =
-    case status of
-        Belum ->
-            0
-
-        Sedang ->
-            1
-
-        Sudah ->
-            2
-
-
-type alias Deskripsi =
-    String
-
-
-type alias ID =
-    Int
-
-
-type alias Prioritas =
-    Float
-
-
-type alias Todo =
-    { id : ID
-    , deskripsi : Deskripsi
-    , status : TodoStatus
-    , prioritas : Prioritas
-    }
+import Todo exposing (Todo)
 
 
 type alias Model =
     { todos : List Todo
-    , idSelanjutnya : ID
+    , idSelanjutnya : Todo.ID
     , teksInput : String
     , prioritasInput : Float
+    , skalaInput : String
     }
 
 
@@ -96,30 +30,33 @@ init flag =
             , idSelanjutnya = 1
             , teksInput = ""
             , prioritasInput = 0
+            , skalaInput = ""
             }
     , Cmd.none
     )
 
 
 type Msg
-    = TambahTodo Deskripsi Prioritas
+    = TambahTodo Todo.Deskripsi Todo.Prioritas Todo.Skala
     | SimpanTeksInput String
     | SimpanPrioritasInput Float
-    | GantiStatusTodo ID TodoStatus
-    | HapusTodo ID
+    | SimpanSkalaInput String
+    | GantiStatusTodo Todo.ID Todo.Status
+    | HapusTodo Todo.ID
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        TambahTodo desk prioritas ->
+        TambahTodo desk prioritas skala ->
             let
                 todoBaru : Todo
                 todoBaru =
                     { id = model.idSelanjutnya
                     , deskripsi = desk
-                    , status = Belum
+                    , status = Todo.Belum
                     , prioritas = prioritas
+                    , skala = skala
                     }
             in
             ( if String.isEmpty desk then
@@ -130,9 +67,9 @@ update msg model =
                     | todos =
                         todoBaru
                             :: model.todos
-                            |> normalizeTodos
+                            |> Todo.normalize
                             |> List.reverse
-                            |> List.sortWith urutkanTodos
+                            |> List.sortWith Todo.urutkan
                     , idSelanjutnya = model.idSelanjutnya + 1
                 }
             , Cmd.none
@@ -150,9 +87,9 @@ update msg model =
                                 else
                                     todo
                             )
-                        |> normalizeTodos
+                        |> Todo.normalize
                         |> List.reverse
-                        |> List.sortWith urutkanTodos
+                        |> List.sortWith Todo.urutkan
               }
             , Cmd.none
             )
@@ -162,9 +99,9 @@ update msg model =
                 | todos =
                     model.todos
                         |> List.filter (\todo -> todo.id /= id)
-                        |> normalizeTodos
+                        |> Todo.normalize
                         |> List.reverse
-                        |> List.sortWith urutkanTodos
+                        |> List.sortWith Todo.urutkan
               }
             , Cmd.none
             )
@@ -175,64 +112,8 @@ update msg model =
         SimpanPrioritasInput prioritas ->
             ( { model | prioritasInput = prioritas }, Cmd.none )
 
-
-zipWith : (a -> b -> c) -> List a -> List b -> List c
-zipWith fn xs ys =
-    case ( xs, ys ) of
-        ( [], _ ) ->
-            []
-
-        ( _, [] ) ->
-            []
-
-        ( [ x ], [ y ] ) ->
-            [ fn x y ]
-
-        ( x :: xx, y :: yy ) ->
-            fn x y :: zipWith fn xx yy
-
-
-normalizeTodos : List Todo -> List Todo
-normalizeTodos todos =
-    let
-        updatePrioritas prioritas todo =
-            { todo | prioritas = prioritas }
-    in
-    todos
-        |> List.sortBy .prioritas
-        |> zipWith
-            updatePrioritas
-            (List.range 1 (List.length todos) |> List.map toFloat)
-
-
-urutkanTodos : Todo -> Todo -> Order
-urutkanTodos todo1 todo2 =
-    let
-        s1 =
-            todo1.status
-
-        s2 =
-            todo2.status
-    in
-    if s1 == s2 then
-        EQ
-
-    else
-        case ( s1, s2 ) of
-            ( Sudah, _ ) ->
-                GT
-
-            ( _, Sudah ) ->
-                LT
-
-            ( Belum, _ ) ->
-                GT
-
-            ( _, Belum ) ->
-                LT
-
-            _ ->
-                EQ
+        SimpanSkalaInput skala ->
+            ( { model | skalaInput = skala }, Cmd.none )
 
 
 viewTodo : Todo -> H.Html Msg
@@ -240,44 +121,47 @@ viewTodo todo =
     let
         ( msg, label ) =
             case todo.status of
-                Belum ->
-                    ( GantiStatusTodo todo.id Sedang, "lakukan" )
+                Todo.Belum ->
+                    ( GantiStatusTodo todo.id Todo.Sedang, " lakukan" )
 
-                Sedang ->
-                    ( GantiStatusTodo todo.id Sudah, "selesai" )
+                Todo.Sedang ->
+                    ( GantiStatusTodo todo.id Todo.Sudah, " selesai" )
 
-                Sudah ->
-                    ( GantiStatusTodo todo.id Belum, "ulangi" )
+                Todo.Sudah ->
+                    ( GantiStatusTodo todo.id Todo.Belum, " ulangi" )
     in
-    H.article [ A.class ("todo " ++ showStatus todo.status) ]
+    H.article [ A.class ("todo " ++ Todo.showStatus todo.status) ]
         [ H.nav []
-            [ H.ul []
+            [ H.ul [ A.class "teks" ]
                 [ H.li []
                     [ H.text todo.deskripsi
-                    , H.text <| " (" ++ showStatus todo.status ++ ") "
+                    , H.text <| " (" ++ Todo.showStatus todo.status ++ ") "
                     , H.text <| " <" ++ String.fromFloat todo.prioritas ++ "> "
+                    , H.text <| " [" ++ Todo.showSkala todo.skala ++ "] "
                     ]
                 ]
-            , H.ul []
+            , H.ul [ A.class "progres" ]
                 [ H.progress
                     [ A.value
                         (todo.status
-                            |> enumerateStatus
+                            |> Todo.enumerateStatus
                             |> String.fromInt
                         )
                     , A.max "2"
                     ]
                     []
-                , H.li []
+                ]
+            , H.ul [ A.class "kontrol" ]
+                [ H.li []
                     [ H.button [ A.class "steps", E.onClick msg ]
                         [ (case todo.status of
-                            Sudah ->
+                            Todo.Sudah ->
                                 F.rotateCcw
 
-                            Belum ->
+                            Todo.Belum ->
                                 F.play
 
-                            Sedang ->
+                            Todo.Sedang ->
                                 F.fastForward
                           )
                             |> F.toHtml []
@@ -286,7 +170,7 @@ viewTodo todo =
                     ]
                 , H.li []
                     [ H.button [ A.class "hapus", E.onClick (HapusTodo todo.id) ]
-                        [ F.trash |> F.toHtml [], H.text "hapus" ]
+                        [ F.trash |> F.toHtml [], H.text " hapus" ]
                     ]
                 ]
             ]
@@ -295,13 +179,20 @@ viewTodo todo =
 
 view : Model -> H.Html Msg
 view model =
+    let
+        skala =
+            Todo.readSkala model.skalaInput
+    in
     H.main_ []
         [ H.h1 [] [ H.text "Todo App" ]
-        , H.form [ E.onSubmit (TambahTodo model.teksInput model.prioritasInput) ]
+        , H.form
+            [ E.onSubmit
+                (TambahTodo model.teksInput model.prioritasInput skala)
+            ]
             [ H.fieldset [ A.attribute "role" "group" ]
                 [ H.input [ A.placeholder "todo baru", E.onInput SimpanTeksInput ] []
                 , H.input
-                    [ A.placeholder "prioritas"
+                    [ A.placeholder "prioritas (0.0 - ∞)"
                     , E.onInput
                         (String.toFloat
                             >> Maybe.withDefault 0
@@ -309,13 +200,42 @@ view model =
                         )
                     ]
                     []
+                ]
+            , H.fieldset [ A.attribute "role" "group" ]
+                [ H.select [ A.name "skala", E.onInput SimpanSkalaInput, onSelect SimpanSkalaInput ]
+                    [ H.option [ A.selected True, A.disabled True, A.value "" ]
+                        [ H.text "skala" ]
+                    , H.option [] [ H.text "S" ]
+                    , H.option [] [ H.text "M" ]
+                    , H.option [] [ H.text "L" ]
+                    , H.option [] [ H.text "XL" ]
+                    ]
                 , H.input [ A.value "Tambah", A.type_ "submit" ] []
                 ]
             ]
         , H.div [] <| List.map viewTodo model.todos
         , H.br [] []
-        , H.footer [] [ H.text "Copyright (c) 2024 LitFill. All Rights Reserved." ]
+        , H.footer []
+            [ H.text "Copyright (c) 2024 "
+            , H.a [ A.href "https://github.com/LitFill" ] [ H.text "LitFill" ]
+            , H.text ". All Rights are open source."
+            ]
         ]
+
+
+
+-- NOTE: this is from elm Html.Events
+
+
+onSelect : (String -> msg) -> H.Attribute msg
+onSelect tagger =
+    E.stopPropagationOn "input" <|
+        JD.map alwaysStop (JD.map tagger E.targetValue)
+
+
+alwaysStop : a -> ( a, Bool )
+alwaysStop x =
+    ( x, True )
 
 
 port setStorage : JE.Value -> Cmd msg
@@ -340,8 +260,9 @@ encodeTodo todo =
     JE.object
         [ ( "id", JE.int todo.id )
         , ( "deskripsi", JE.string todo.deskripsi )
-        , ( "status", JE.string <| showStatus todo.status )
+        , ( "status", JE.string <| Todo.showStatus todo.status )
         , ( "prioritas", JE.float todo.prioritas )
+        , ( "skala", JE.string <| Todo.showSkala todo.skala )
         ]
 
 
@@ -352,30 +273,38 @@ encode model =
         , ( "id_berikutnya", JE.int model.idSelanjutnya )
         , ( "teks_input", JE.string model.teksInput )
         , ( "prioritas_input", JE.float model.prioritasInput )
+        , ( "skala_input", JE.string model.skalaInput )
         ]
 
 
-statusDecoder : JD.Decoder TodoStatus
+statusDecoder : JD.Decoder Todo.Status
 statusDecoder =
-    JD.map readStatus JD.string
+    JD.map Todo.readStatus JD.string
+
+
+skalaDecoder : JD.Decoder Todo.Skala
+skalaDecoder =
+    JD.map Todo.readSkala JD.string
 
 
 todoDecoder : JD.Decoder Todo
 todoDecoder =
-    JD.map4 Todo
+    JD.map5 Todo
         (JD.field "id" JD.int)
         (JD.field "deskripsi" JD.string)
         (JD.field "status" statusDecoder)
         (JD.field "prioritas" JD.float)
+        (JD.field "skala" skalaDecoder)
 
 
 decoder : JD.Decoder Model
 decoder =
-    JD.map4 Model
+    JD.map5 Model
         (JD.field "todos" <| JD.list todoDecoder)
         (JD.field "id_berikutnya" JD.int)
         (JD.field "teks_input" JD.string)
         (JD.field "prioritas_input" JD.float)
+        (JD.field "skala_input" JD.string)
 
 
 main : Program JE.Value Model Msg

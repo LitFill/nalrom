@@ -1,0 +1,9 @@
+{
+    "fmt": {
+        "lineWidth": 80,
+        "indentWidth": 4,
+        "semiColons": true,
+        "proseWrap": "preserve",
+        "exclude": ["elm.mini.js"]
+    }
+}

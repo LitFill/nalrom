@@ -1,52 +1,42 @@
 body {
-  transition: all 0.3s ease;
-  overflow: scroll;
+    transition: all 0.3s ease;
+    overflow: scroll;
 }
 
 .todo.sedang {
-  color: #524ed2;
-  text-decoration: underline;
+    color: #524ed2;
+    text-decoration: underline;
 }
 
 .todo.sudah {
-  color: lightgreen;
-  opacity: 40%;
+    color: lightgreen;
+    opacity: 40%;
 }
 .todo > nav > ul > li > .hapus {
-  background-color: #c52f21;
-  border: 1px solid #c52f21;
+    background-color: #c52f21;
+    border: 1px solid #c52f21;
 }
 
 .todo.sudah > nav > ul > li > .steps {
-  background-color: #7385a9;
-  border: 1px solid #7385a9;
+    background-color: #7385a9;
+    border: 1px solid #7385a9;
 }
 
 body > main > h1 {
-  text-align: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 body > main > footer {
-  text-align: center;
+    text-align: center;
 }
 
-/* body > main { */
-  /* border: 1px solid red; */
-/* } */
-
-/* @media (max-width: 720px) { */
-/*     body { */
-/*         font-size: 12px; */
-/*         padding: 5px; */
-/*         background-color: red; */
-/*     } */
+.todo > nav > ul > li > button > svg {
+    vertical-align: text-top;
+}
 /**/
-/*     .todo { */
-/*         font-size: 10px; */
-/*         padding: 5px; */
-/*         margin-bottom: 5px; */
-/*         border: 1px solid red; */
-/*     } */
+/* .todo > nav > .teks { */
+/*   color: red; */
+/*   border: 1px solid red; */
 /* } */

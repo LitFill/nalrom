@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Todo App</title>
-    <meta name="color-scheme" content="light dark" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.indigo.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="elm.js">
-    </script>
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Todo App</title>
+        <meta name="color-scheme" content="light dark" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.indigo.min.css"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <!-- <script type="text/javascript" src="elm.mini.js"> </script> -->
+        <script type="text/javascript" src="elm.js">
+        </script>
+    </head>
 
-  <body>
-    <div id="app"></div>
+    <body>
+        <div id="app"></div>
 
-    <script type="text/javascript">
-      var dataStorage = localStorage.getItem("app-model");
-      var flags = dataStorage ? JSON.parse(dataStorage) : null;
+        <script type="text/javascript">
+            var dataStorage = localStorage.getItem("app-model");
+            var flags = dataStorage ? JSON.parse(dataStorage) : null;
 
-      var app = Elm.Main.init({
-        node: document.getElementById("app"),
-        flags: flags,
-      });
+            var app = Elm.Main.init({
+                node: document.getElementById("app"),
+                flags: flags,
+            });
 
-      app.ports.setStorage.subscribe((state) => {
-        localStorage.setItem("app-model", JSON.stringify(state));
-      });
-    </script>
-  </body>
+            app.ports.setStorage.subscribe((state) => {
+                localStorage.setItem("app-model", JSON.stringify(state));
+            });
+        </script>
+    </body>
 </html>
