@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aK,
-		impl.aS,
-		impl.aQ,
+		impl.aM,
+		impl.aY,
+		impl.aW,
 		function() { return function() {} }
 	);
 });
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aK,
-		impl.aS,
-		impl.aQ,
+		impl.aM,
+		impl.aY,
+		impl.aW,
 		function(sendToApp, initialModel) {
-			var view = impl.aT;
+			var view = impl.aZ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aK,
-		impl.aS,
-		impl.aQ,
+		impl.aM,
+		impl.aY,
+		impl.aW,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.X && impl.X(sendToApp)
-			var view = impl.aT;
+			var view = impl.aZ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3997,7 +3997,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aR) && (_VirtualDom_doc.title = title = doc.aR);
+				(title !== doc.aX) && (_VirtualDom_doc.title = title = doc.aX);
 			});
 		}
 	);
@@ -4053,8 +4053,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aM;
-	var onUrlRequest = impl.aN;
+	var onUrlChange = impl.aR;
+	var onUrlRequest = impl.aS;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aK: function(flags)
+		aM: function(flags)
 		{
-			return A3(impl.aK, flags, _Browser_getUrl(), key);
+			return A3(impl.aM, flags, _Browser_getUrl(), key);
 		},
-		aT: impl.aT,
-		aS: impl.aS,
-		aQ: impl.aQ
+		aZ: impl.aZ,
+		aY: impl.aY,
+		aW: impl.aW
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aI: 'hidden', aE: 'visibilitychange' }
+		? { aJ: 'hidden', aF: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aI: 'mozHidden', aE: 'mozvisibilitychange' }
+		? { aJ: 'mozHidden', aF: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aI: 'msHidden', aE: 'msvisibilitychange' }
+		? { aJ: 'msHidden', aF: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aI: 'webkitHidden', aE: 'webkitvisibilitychange' }
-		: { aI: 'hidden', aE: 'visibilitychange' };
+		? { aJ: 'webkitHidden', aF: 'webkitvisibilitychange' }
+		: { aJ: 'hidden', aF: 'visibilitychange' };
 }
 
 
@@ -4331,7 +4331,7 @@ function _Browser_getElement(id)
 				ay: _Browser_doc.documentElement.clientWidth,
 				ag: _Browser_doc.documentElement.clientHeight
 			},
-			aG: {
+			aH: {
 				az: x + rect.left,
 				aA: y + rect.top,
 				ay: rect.width,
@@ -4370,6 +4370,322 @@ function _Browser_load(url)
 		}
 	}));
 }
+
+
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
+
+
+// CREATE
+
+var _Regex_never = /.^/;
+
+var _Regex_fromStringWith = F2(function(options, string)
+{
+	var flags = 'g';
+	if (options.aO) { flags += 'm'; }
+	if (options.aE) { flags += 'i'; }
+
+	try
+	{
+		return $elm$core$Maybe$Just(new RegExp(string, flags));
+	}
+	catch(error)
+	{
+		return $elm$core$Maybe$Nothing;
+	}
+});
+
+
+// USE
+
+var _Regex_contains = F2(function(re, string)
+{
+	return string.match(re) !== null;
+});
+
+
+var _Regex_findAtMost = F3(function(n, re, str)
+{
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex == re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch
+				? $elm$core$Maybe$Just(submatch)
+				: $elm$core$Maybe$Nothing;
+		}
+		out.push(A4($elm$regex$Regex$Match, result[0], result.index, number, _List_fromArray(subs)));
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _List_fromArray(out);
+});
+
+
+var _Regex_replaceAtMost = F4(function(n, re, replacer, string)
+{
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch
+				? $elm$core$Maybe$Just(submatch)
+				: $elm$core$Maybe$Nothing;
+		}
+		return replacer(A4($elm$regex$Regex$Match, match, arguments[arguments.length - 2], count, _List_fromArray(submatches)));
+	}
+	return string.replace(re, jsReplacer);
+});
+
+var _Regex_splitAtMost = F3(function(n, re, str)
+{
+	var string = str;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		var result = re.exec(string);
+		if (!result) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _List_fromArray(out);
+});
+
+var _Regex_infinity = Infinity;
+
+
+
+// DECODER
+
+var _File_decoder = _Json_decodePrim(function(value) {
+	// NOTE: checks if `File` exists in case this is run on node
+	return (typeof File !== 'undefined' && value instanceof File)
+		? $elm$core$Result$Ok(value)
+		: _Json_expecting('a FILE', value);
+});
+
+
+// METADATA
+
+function _File_name(file) { return file.name; }
+function _File_mime(file) { return file.type; }
+function _File_size(file) { return file.size; }
+
+function _File_lastModified(file)
+{
+	return $elm$time$Time$millisToPosix(file.lastModified);
+}
+
+
+// DOWNLOAD
+
+var _File_downloadNode;
+
+function _File_getDownloadNode()
+{
+	return _File_downloadNode || (_File_downloadNode = document.createElement('a'));
+}
+
+var _File_download = F3(function(name, mime, content)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var blob = new Blob([content], {type: mime});
+
+		// for IE10+
+		if (navigator.msSaveOrOpenBlob)
+		{
+			navigator.msSaveOrOpenBlob(blob, name);
+			return;
+		}
+
+		// for HTML5
+		var node = _File_getDownloadNode();
+		var objectUrl = URL.createObjectURL(blob);
+		node.href = objectUrl;
+		node.download = name;
+		_File_click(node);
+		URL.revokeObjectURL(objectUrl);
+	});
+});
+
+function _File_downloadUrl(href)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var node = _File_getDownloadNode();
+		node.href = href;
+		node.download = '';
+		node.origin === location.origin || (node.target = '_blank');
+		_File_click(node);
+	});
+}
+
+
+// IE COMPATIBILITY
+
+function _File_makeBytesSafeForInternetExplorer(bytes)
+{
+	// only needed by IE10 and IE11 to fix https://github.com/elm/file/issues/10
+	// all other browsers can just run `new Blob([bytes])` directly with no problem
+	//
+	return new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+}
+
+function _File_click(node)
+{
+	// only needed by IE10 and IE11 to fix https://github.com/elm/file/issues/11
+	// all other browsers have MouseEvent and do not need this conditional stuff
+	//
+	if (typeof MouseEvent === 'function')
+	{
+		node.dispatchEvent(new MouseEvent('click'));
+	}
+	else
+	{
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		document.body.appendChild(node);
+		node.dispatchEvent(event);
+		document.body.removeChild(node);
+	}
+}
+
+
+// UPLOAD
+
+var _File_node;
+
+function _File_uploadOne(mimes)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		_File_node = document.createElement('input');
+		_File_node.type = 'file';
+		_File_node.accept = A2($elm$core$String$join, ',', mimes);
+		_File_node.addEventListener('change', function(event)
+		{
+			callback(_Scheduler_succeed(event.target.files[0]));
+		});
+		_File_click(_File_node);
+	});
+}
+
+function _File_uploadOneOrMore(mimes)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		_File_node = document.createElement('input');
+		_File_node.type = 'file';
+		_File_node.multiple = true;
+		_File_node.accept = A2($elm$core$String$join, ',', mimes);
+		_File_node.addEventListener('change', function(event)
+		{
+			var elmFiles = _List_fromArray(event.target.files);
+			callback(_Scheduler_succeed(_Utils_Tuple2(elmFiles.a, elmFiles.b)));
+		});
+		_File_click(_File_node);
+	});
+}
+
+
+// CONTENT
+
+function _File_toString(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(reader.result));
+		});
+		reader.readAsText(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+function _File_toBytes(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(new DataView(reader.result)));
+		});
+		reader.readAsArrayBuffer(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+function _File_toUrl(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(reader.result));
+		});
+		reader.readAsDataURL(blob);
+		return function() { reader.abort(); };
+	});
+}
+
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -5159,7 +5475,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $author$project$Main$Model = F5(
 	function (todos, idSelanjutnya, teksInput, prioritasInput, skalaInput) {
-		return {B: idSelanjutnya, G: prioritasInput, I: skalaInput, K: teksInput, n: todos};
+		return {B: idSelanjutnya, G: prioritasInput, I: skalaInput, K: teksInput, l: todos};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
@@ -5235,7 +5551,7 @@ var $author$project$Main$init = function (flag) {
 				var model = _v0.a;
 				return model;
 			} else {
-				return {B: 1, G: 0, I: '', K: '', n: _List_Nil};
+				return {B: 1, G: 0, I: '', K: '', l: _List_Nil};
 			}
 		}(),
 		$elm$core$Platform$Cmd$none);
@@ -5318,7 +5634,7 @@ var $author$project$Main$encode = function (model) {
 			[
 				_Utils_Tuple2(
 				'todos',
-				A2($elm$json$Json$Encode$list, $author$project$Main$encodeTodo, model.n)),
+				A2($elm$json$Json$Encode$list, $author$project$Main$encodeTodo, model.l)),
 				_Utils_Tuple2(
 				'id_berikutnya',
 				$elm$json$Json$Encode$int(model.B)),
@@ -5347,39 +5663,6 @@ var $elm$core$List$filter = F2(
 	});
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$List$sortBy = _List_sortBy;
-var $author$project$Todo$zipWith = F3(
-	function (fn, xs, ys) {
-		var _v0 = _Utils_Tuple2(xs, ys);
-		if (!_v0.a.b) {
-			return _List_Nil;
-		} else {
-			if (!_v0.b.b) {
-				return _List_Nil;
-			} else {
-				if ((!_v0.a.b.b) && (!_v0.b.b.b)) {
-					var _v1 = _v0.a;
-					var x = _v1.a;
-					var _v2 = _v0.b;
-					var y = _v2.a;
-					return _List_fromArray(
-						[
-							A2(fn, x, y)
-						]);
-				} else {
-					var _v3 = _v0.a;
-					var x = _v3.a;
-					var xx = _v3.b;
-					var _v4 = _v0.b;
-					var y = _v4.a;
-					var yy = _v4.b;
-					return A2(
-						$elm$core$List$cons,
-						A2(fn, x, y),
-						A3($author$project$Todo$zipWith, fn, xx, yy));
-				}
-			}
-		}
-	});
 var $author$project$Todo$normalize = function (todos) {
 	var updatePrioritas = F2(
 		function (prioritas, todo) {
@@ -5388,7 +5671,7 @@ var $author$project$Todo$normalize = function (todos) {
 				{W: prioritas});
 		});
 	return A3(
-		$author$project$Todo$zipWith,
+		$elm$core$List$map2,
 		updatePrioritas,
 		A2(
 			$elm$core$List$map,
@@ -5405,6 +5688,191 @@ var $author$project$Todo$normalize = function (todos) {
 			todos));
 };
 var $elm$core$List$sortWith = _List_sortWith;
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$Basics$composeL = F3(
+	function (g, f, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$String$dropRight = F2(
+	function (n, string) {
+		return (n < 1) ? string : A3($elm$core$String$slice, 0, -n, string);
+	});
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var $elm$core$Array$getHelp = F3(
+	function (shift, index, tree) {
+		getHelp:
+		while (true) {
+			var pos = $elm$core$Array$bitMask & (index >>> shift);
+			var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (!_v0.$) {
+				var subTree = _v0.a;
+				var $temp$shift = shift - $elm$core$Array$shiftStep,
+					$temp$index = index,
+					$temp$tree = subTree;
+				shift = $temp$shift;
+				index = $temp$index;
+				tree = $temp$tree;
+				continue getHelp;
+			} else {
+				var values = _v0.a;
+				return A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, values);
+			}
+		}
+	});
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
+};
+var $elm$core$Array$get = F2(
+	function (index, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? $elm$core$Maybe$Nothing : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? $elm$core$Maybe$Just(
+			A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, tail)) : $elm$core$Maybe$Just(
+			A3($elm$core$Array$getHelp, startShift, index, tree)));
+	});
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Todo$applyInterpolation = F2(
+	function (replacements, _v0) {
+		var match = _v0.aN;
+		var ordinalString = A2(
+			$elm$core$Basics$composeL,
+			$elm$core$String$dropLeft(1),
+			$elm$core$String$dropRight(1))(match);
+		return A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			A2(
+				$elm$core$Maybe$andThen,
+				function (value) {
+					return A2($elm$core$Array$get, value, replacements);
+				},
+				$elm$core$String$toInt(ordinalString)));
+	});
+var $elm$core$Array$fromListHelp = F3(
+	function (list, nodeList, nodeListSize) {
+		fromListHelp:
+		while (true) {
+			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
+			var jsArray = _v0.a;
+			var remainingItems = _v0.b;
+			if (_Utils_cmp(
+				$elm$core$Elm$JsArray$length(jsArray),
+				$elm$core$Array$branchFactor) < 0) {
+				return A2(
+					$elm$core$Array$builderToArray,
+					true,
+					{d: nodeList, a: nodeListSize, c: jsArray});
+			} else {
+				var $temp$list = remainingItems,
+					$temp$nodeList = A2(
+					$elm$core$List$cons,
+					$elm$core$Array$Leaf(jsArray),
+					nodeList),
+					$temp$nodeListSize = nodeListSize + 1;
+				list = $temp$list;
+				nodeList = $temp$nodeList;
+				nodeListSize = $temp$nodeListSize;
+				continue fromListHelp;
+			}
+		}
+	});
+var $elm$core$Array$fromList = function (list) {
+	if (!list.b) {
+		return $elm$core$Array$empty;
+	} else {
+		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
+	}
+};
+var $elm$regex$Regex$Match = F4(
+	function (match, index, number, submatches) {
+		return {aL: index, aN: match, aQ: number, aV: submatches};
+	});
+var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
+var $elm$regex$Regex$fromString = function (string) {
+	return A2(
+		$elm$regex$Regex$fromStringWith,
+		{aE: false, aO: false},
+		string);
+};
+var $elm$regex$Regex$never = _Regex_never;
+var $author$project$Todo$interpolationRegex = A2(
+	$elm$core$Maybe$withDefault,
+	$elm$regex$Regex$never,
+	$elm$regex$Regex$fromString('\\{\\d+\\}'));
+var $elm$regex$Regex$replace = _Regex_replaceAtMost(_Regex_infinity);
+var $author$project$Todo$interpolate = F2(
+	function (string, args) {
+		var asArray = $elm$core$Array$fromList(args);
+		return A3(
+			$elm$regex$Regex$replace,
+			$author$project$Todo$interpolationRegex,
+			$author$project$Todo$applyInterpolation(asArray),
+			string);
+	});
+var $author$project$Todo$showTodo = function (todo) {
+	return A2(
+		$author$project$Todo$interpolate,
+		'{0} -- {1} [{2}] <{3}>',
+		_List_fromArray(
+			[
+				todo.S,
+				$author$project$Todo$showStatus(todo.u),
+				$author$project$Todo$showSkala(todo.Y),
+				$elm$core$String$fromFloat(todo.W)
+			]));
+};
+var $author$project$Todo$showTodos = A2(
+	$elm$core$Basics$composeR,
+	$elm$core$List$map($author$project$Todo$showTodo),
+	$elm$core$String$join('\n'));
+var $elm$time$Time$Posix = $elm$core$Basics$identity;
+var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
+var $elm$file$File$Download$string = F3(
+	function (name, mime, content) {
+		return A2(
+			$elm$core$Task$perform,
+			$elm$core$Basics$never,
+			A3(_File_download, name, mime, content));
+	});
+var $author$project$Main$unduhTodos = A2(
+	$elm$core$Basics$composeR,
+	$author$project$Todo$showTodos,
+	A2($elm$file$File$Download$string, 'todo.txt', 'text/plain'));
 var $author$project$Todo$urutkan = F2(
 	function (todo1, todo2) {
 		var s2 = todo2.u;
@@ -5462,12 +5930,12 @@ var $author$project$Main$update = F2(
 						model,
 						{
 							B: model.B + 1,
-							n: A2(
+							l: A2(
 								$elm$core$List$sortWith,
 								$author$project$Todo$urutkan,
 								$elm$core$List$reverse(
 									$author$project$Todo$normalize(
-										A2($elm$core$List$cons, todoBaru, model.n))))
+										A2($elm$core$List$cons, todoBaru, model.l))))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 4:
@@ -5477,7 +5945,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							n: A2(
+							l: A2(
 								$elm$core$List$sortWith,
 								$author$project$Todo$urutkan,
 								$elm$core$List$reverse(
@@ -5489,7 +5957,7 @@ var $author$project$Main$update = F2(
 													todo,
 													{u: status}) : todo;
 											},
-											model.n))))
+											model.l))))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 5:
@@ -5498,7 +5966,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							n: A2(
+							l: A2(
 								$elm$core$List$sortWith,
 								$author$project$Todo$urutkan,
 								$elm$core$List$reverse(
@@ -5508,7 +5976,7 @@ var $author$project$Main$update = F2(
 											function (todo) {
 												return !_Utils_eq(todo.r, id);
 											},
-											model.n))))
+											model.l))))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 1:
@@ -5525,13 +5993,17 @@ var $author$project$Main$update = F2(
 						model,
 						{G: prioritas}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			case 3:
 				var skala = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{I: skala}),
 					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					model,
+					$author$project$Main$unduhTodos(model.l));
 		}
 	});
 var $author$project$Main$updateDanStorage = F2(
@@ -5550,6 +6022,7 @@ var $author$project$Main$updateDanStorage = F2(
 					])));
 	});
 var $elm$json$Json$Decode$value = _Json_decodeValue;
+var $author$project$Main$DownloadTodos = {$: 6};
 var $author$project$Main$SimpanPrioritasInput = function (a) {
 	return {$: 2, a: a};
 };
@@ -5573,11 +6046,7 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$br = _VirtualDom_node('br');
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -5608,13 +6077,29 @@ var $elm$html$Html$Attributes$href = function (url) {
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $elm$html$Html$Attributes$name = $elm$html$Html$Attributes$stringProperty('name');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
 	return {$: 1, a: a};
 };
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
 		return A2(
@@ -5678,6 +6163,8 @@ var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty('selected');
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$core$String$toFloat = _String_toFloat;
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
@@ -5689,7 +6176,6 @@ var $author$project$Main$HapusTodo = function (a) {
 	return {$: 5, a: a};
 };
 var $elm$html$Html$article = _VirtualDom_node('article');
-var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $author$project$Todo$enumerateStatus = function (status) {
 	switch (status) {
@@ -5782,26 +6268,9 @@ var $1602$elm_feather$FeatherIcons$fastForward = A2(
 					_List_Nil)
 				]))
 		]));
-var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$nav = _VirtualDom_node('nav');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $1602$elm_feather$FeatherIcons$play = A2(
 	$1602$elm_feather$FeatherIcons$makeBuilder,
 	'play',
@@ -6017,7 +6486,7 @@ var $author$project$Main$viewTodo = function (todo) {
 						$elm$html$Html$ul,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('progres')
+								$elm$html$Html$Attributes$class('kontrol')
 							]),
 						_List_fromArray(
 							[
@@ -6030,16 +6499,7 @@ var $author$project$Main$viewTodo = function (todo) {
 											$author$project$Todo$enumerateStatus(todo.u))),
 										$elm$html$Html$Attributes$max('2')
 									]),
-								_List_Nil)
-							])),
-						A2(
-						$elm$html$Html$ul,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('kontrol')
-							]),
-						_List_fromArray(
-							[
+								_List_Nil),
 								A2(
 								$elm$html$Html$li,
 								_List_Nil,
@@ -6094,15 +6554,6 @@ var $author$project$Main$viewTodo = function (todo) {
 					]))
 			]));
 };
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$Main$view = function (model) {
 	var skala = $author$project$Todo$readSkala(model.I);
 	return A2(
@@ -6230,7 +6681,27 @@ var $author$project$Main$view = function (model) {
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				A2($elm$core$List$map, $author$project$Main$viewTodo, model.n)),
+				A2($elm$core$List$map, $author$project$Main$viewTodo, model.l)),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'justify-content', 'flex-end')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$DownloadTodos)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Simpan Todos')
+							]))
+					])),
 				A2($elm$html$Html$br, _List_Nil, _List_Nil),
 				A2(
 				$elm$html$Html$footer,
@@ -6254,11 +6725,11 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		aK: $author$project$Main$init,
-		aQ: function (_v0) {
+		aM: $author$project$Main$init,
+		aW: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		aS: $author$project$Main$updateDanStorage,
-		aT: $author$project$Main$view
+		aY: $author$project$Main$updateDanStorage,
+		aZ: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)},'Todo':{'init':_VirtualDom_init($author$project$Todo$main)(0)(0)}});}(this));

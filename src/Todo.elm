@@ -1,6 +1,9 @@
 module Todo exposing (..)
 
+import Array exposing (Array)
 import Html as H
+import List exposing (..)
+import Regex exposing (Regex)
 
 
 type Status
@@ -144,35 +147,62 @@ urutkan todo1 todo2 =
                 EQ
 
 
-zipWith : (a -> b -> c) -> List a -> List b -> List c
-zipWith fn xs ys =
-    case ( xs, ys ) of
-        ( [], _ ) ->
-            []
-
-        ( _, [] ) ->
-            []
-
-        ( [ x ], [ y ] ) ->
-            [ fn x y ]
-
-        ( x :: xx, y :: yy ) ->
-            fn x y :: zipWith fn xx yy
-
-
 normalize : List Todo -> List Todo
 normalize todos =
     let
+        updatePrioritas : Prioritas -> Todo -> Todo
         updatePrioritas prioritas todo =
             { todo | prioritas = prioritas }
     in
     todos
-        |> List.sortBy .prioritas
-        |> zipWith
-            updatePrioritas
-            (List.range 1 (List.length todos) |> List.map toFloat)
+        |> sortBy .prioritas
+        |> map2 updatePrioritas
+            (range 1 (length todos) |> map toFloat)
+
+
+showTodos : List Todo -> String
+showTodos =
+    map showTodo >> String.join "\n"
+
+
+showTodo : Todo -> String
+showTodo todo =
+    interpolate "{0} -- {1} [{2}] <{3}>"
+        [ todo.deskripsi
+        , todo.status |> showStatus
+        , todo.skala |> showSkala
+        , todo.prioritas |> String.fromFloat
+        ]
 
 
 main : H.Html msg
 main =
     H.text "Hello"
+
+
+{-| stolen from String.Interpolate
+-}
+interpolate : String -> List String -> String
+interpolate string args =
+    let
+        asArray =
+            Array.fromList args
+    in
+    Regex.replace interpolationRegex (applyInterpolation asArray) string
+
+
+interpolationRegex : Regex
+interpolationRegex =
+    Regex.fromString "\\{\\d+\\}" |> Maybe.withDefault Regex.never
+
+
+applyInterpolation : Array String -> Regex.Match -> String
+applyInterpolation replacements { match } =
+    let
+        ordinalString =
+            (String.dropLeft 1 << String.dropRight 1) match
+    in
+    ordinalString
+        |> String.toInt
+        |> Maybe.andThen (\value -> Array.get value replacements)
+        |> Maybe.withDefault ""

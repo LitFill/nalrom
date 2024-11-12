@@ -2,6 +2,7 @@ port module Main exposing (main)
 
 import Browser
 import FeatherIcons as F
+import File.Download as Download
 import Html as H
 import Html.Attributes as A
 import Html.Events as E
@@ -43,6 +44,7 @@ type Msg
     | SimpanSkalaInput String
     | GantiStatusTodo Todo.ID Todo.Status
     | HapusTodo Todo.ID
+    | DownloadTodos
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -115,6 +117,11 @@ update msg model =
         SimpanSkalaInput skala ->
             ( { model | skalaInput = skala }, Cmd.none )
 
+        DownloadTodos ->
+            ( model
+            , model.todos |> unduhTodos
+            )
+
 
 viewTodo : Todo -> H.Html Msg
 viewTodo todo =
@@ -140,7 +147,7 @@ viewTodo todo =
                     , H.text <| " [" ++ Todo.showSkala todo.skala ++ "] "
                     ]
                 ]
-            , H.ul [ A.class "progres" ]
+            , H.ul [ A.class "kontrol" ]
                 [ H.progress
                     [ A.value
                         (todo.status
@@ -150,9 +157,7 @@ viewTodo todo =
                     , A.max "2"
                     ]
                     []
-                ]
-            , H.ul [ A.class "kontrol" ]
-                [ H.li []
+                , H.li []
                     [ H.button [ A.class "steps", E.onClick msg ]
                         [ (case todo.status of
                             Todo.Sudah ->
@@ -214,6 +219,11 @@ view model =
                 ]
             ]
         , H.div [] <| List.map viewTodo model.todos
+        , H.div
+            [ A.style "display" "flex"
+            , A.style "justify-content" "flex-end"
+            ]
+            [ H.button [ E.onClick DownloadTodos ] [ H.text "Simpan Todos" ] ]
         , H.br [] []
         , H.footer []
             [ H.text "Copyright (c) 2024 "
@@ -305,6 +315,11 @@ decoder =
         (JD.field "teks_input" JD.string)
         (JD.field "prioritas_input" JD.float)
         (JD.field "skala_input" JD.string)
+
+
+unduhTodos : List Todo -> Cmd msg
+unduhTodos =
+    Todo.showTodos >> Download.string "todo.txt" "text/plain"
 
 
 main : Program JE.Value Model Msg
